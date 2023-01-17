@@ -9,17 +9,19 @@
         width: getWidth(),
         left: getLeft(i),
         zIndex: i,
-        backgroundColor: `rgb(${parseInt(Math.random()*256)},${parseInt(Math.random()*256)},${parseInt(Math.random()*256)})`,
+        backgroundColor: `rgb(${parseInt(Math.random() * 256)},${parseInt(
+          Math.random() * 256
+        )},${parseInt(Math.random() * 256)})`,
       }"
     >
-      <h1 style="position: absolute; color: red;">{{ i }}</h1>
+      <h1 style="position: absolute; color: red">{{ i }}</h1>
       <!-- <img style="width: 100%" :src="ele" alt="" /> -->
     </div>
   </div>
 </template>
 <script>
 export default {
-  name: "Accordion",
+  name: "LAccordion",
   data() {
     return {
       activeIndex: -1,
