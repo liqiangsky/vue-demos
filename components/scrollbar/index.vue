@@ -149,27 +149,28 @@ export default {
       if (e.target === this.$refs.vertical) {
         const y =
           this.vertical.proportion * (offsetY - this.realVerticalSize / 2);
+        const detailY = y > this.scrollWarp.scrollTop ? 100 : -100;
         this.scrollWarp.scrollTop = y;
+        this.scroll({ detailY });
       }
       if (e.target === this.$refs.horizontal) {
         const x =
           this.vertical.proportion * (offsetX - this.realHorizontalSize / 2);
+        const detailX = x > this.scrollWarp.scrollLeft ? 100 : -100;
         this.scrollWarp.scrollLeft = x;
+        this.scroll({ detailX });
       }
     },
     /**
      * 滚动事件
-     *  @argument {Event} e scroll事件对象
      *  @argument {Event} ee 滚动方向对象
      */
-    scroll(e, ee) {
+    scroll(ee) {
       this.show = true;
-      const { scrollTop, scrollLeft } = e.target;
-      this.vertical.translate = (scrollTop / this.height) * 100;
-      this.horizontal.translate = (scrollLeft / this.width) * 100;
-      this.$emit("direction", e, ee);
-      this.$emit("scroll", e, ee);
-      this.scrollEnd(e, ee);
+      this.update();
+      this.$emit("direction", ee);
+      this.$emit("scroll", ee, this.scrollWarp);
+      this.scrollEnd(ee);
     },
     /**
      * 更新滚动容器大小
@@ -224,11 +225,10 @@ export default {
     },
     /**
      * 滚动结束事件
-     * @argument {Event} e 滚动事件对象
      * @argument {Event} ee 滚动方向对象
      */
-    scrollEnd: debounce(function (e, ee) {
-      this.$emit("scorllend", e, ee);
+    scrollEnd: debounce(function (ee) {
+      this.$emit("scorllend", ee);
       if (/Android|webOS|iPhone|iPod|BlackBerry/i.test(navigator.userAgent)) {
         this.show = false;
       }
@@ -239,7 +239,7 @@ export default {
      */
     touchstartX(e) {
       this.position.x = this.scrollWarp.scrollLeft;
-      this.touch.x = e.changedTouches[0]?.clientX;
+      this.touch.x = e.touches[0]?.clientX;
     },
     /**
      * 横向滚动滑块触摸移动中
@@ -249,9 +249,11 @@ export default {
       if (e.target !== this.$refs.horizontalthumb) {
         return;
       }
-      const moveX = e.changedTouches[0]?.clientX - this.touch.x;
+      const moveX = e.touches[0]?.clientX - this.touch.x;
       const x = this.horizontal.proportion * moveX;
       this.scrollWarp.scrollLeft = this.position.x + x;
+      const detailX = moveX > 0 ? 100 : -100;
+      this.scroll({ detailX });
     },
     /**
      * 纵向滚动滑块触摸开始
@@ -259,7 +261,7 @@ export default {
      */
     touchstartY(e) {
       this.position.y = this.scrollWarp.scrollTop;
-      this.touch.y = e.changedTouches[0]?.clientY;
+      this.touch.y = e.touches[0]?.clientY;
     },
     /**
      * 纵向滚动滑块触摸移动中
@@ -269,9 +271,11 @@ export default {
       if (e.target !== this.$refs.verticalthumb) {
         return;
       }
-      const moveY = e.changedTouches[0]?.clientY - this.touch.y;
+      const moveY = e.touches[0]?.clientY - this.touch.y;
       const y = this.vertical.proportion * moveY;
       this.scrollWarp.scrollTop = this.position.y + y;
+      const detailY = moveY > 0 ? 100 : -100;
+      this.scroll({ detailY });
     },
     /**
      * 鼠标按下
@@ -346,7 +350,8 @@ export default {
   position: relative;
   .scroll_warp {
     height: 100%;
-    overflow: scroll;
+    overflow: auto;
+    -webkit-overflow-scrolling: touch;
     &::-webkit-scrollbar {
       width: 0;
       display: none;
