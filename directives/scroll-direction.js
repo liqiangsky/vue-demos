@@ -69,7 +69,14 @@ const iosPlatform = (el, cb) => {
     return e;
   };
   const scrolling = () => {
-    const { scrollTop, scrollLeft, scrollHeight, clientHeight } = el;
+    const {
+      scrollTop,
+      scrollLeft,
+      scrollHeight,
+      scrollWidth,
+      clientHeight,
+      clientWidth,
+    } = el;
     if (oldScrollData.x !== scrollLeft) {
       moveingX = true;
       oldScrollData.x = scrollLeft;
@@ -79,6 +86,14 @@ const iosPlatform = (el, cb) => {
       if (moveingX) {
         // console.warn('stoping x');
         moveingX = false;
+        // 解决ios滑动时橡皮泥效果
+        const maxX = scrollWidth - clientWidth;
+        if (scrollLeft === maxX) {
+          el.scrollLeft = maxX - 1;
+        }
+        if (scrollLeft === 0) {
+          el.scrollLeft = 1;
+        }
       }
     }
     if (oldScrollData.y !== scrollTop) {
@@ -90,14 +105,15 @@ const iosPlatform = (el, cb) => {
       if (moveingY) {
         // console.warn('stoping y');
         moveingY = false;
+        // 解决ios滑动时橡皮泥效果
+        const maxY = scrollHeight - clientHeight;
+        if (scrollTop === maxY) {
+          el.scrollTop = maxY - 1;
+        }
+        if (scrollTop === 0) {
+          el.scrollTop = 1;
+        }
       }
-    }
-    const maxY = scrollHeight - clientHeight;
-    if (scrollTop === maxY) {
-      el.scrollTop = maxY - 1;
-    }
-    if (scrollTop === 0) {
-      el.scrollTop = 1;
     }
     context.id = requestAnimationFrame(scrolling);
   };
