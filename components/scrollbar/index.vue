@@ -9,7 +9,7 @@
     <div
       ref="scrollWarp"
       class="scroll_warp"
-      v-scroll-direction="scroll"
+      v-direction="scroll"
       :style="scrollWarpStyle"
     >
       <div ref="scrollView" class="scroll_view">
@@ -57,7 +57,7 @@
 <script>
 import debounce from "lodash/debounce";
 import scrollbarWidth from "../../utils/scrollbar-width";
-import ScrollDirection from "../../directives/scroll-direction";
+import Direction from "../../directives/direction";
 export default {
   name: "LScrollbar",
   data() {
@@ -340,7 +340,7 @@ export default {
     window.removeEventListener("resize", this.resize, true);
   },
   directives: {
-    ScrollDirection,
+    Direction,
   },
 };
 </script>
