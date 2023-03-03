@@ -1,7 +1,5 @@
-const ua = navigator.userAgent;
+import { userAgent } from './global';
 
-const ios = () => {
-  return !!ua.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/);
-};
+const ios = () => !!userAgent().match(/\(i[^;]+;( U;)? CPU.+Mac OS X/);
 
 export { ios };
