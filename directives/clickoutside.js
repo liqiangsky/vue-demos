@@ -1,7 +1,7 @@
 const nodes = [];
-var speed = 0;
+let speed = 0;
 const ctx = '@@clickoutsideContext';
-var down = '';
+let down = '';
 
 document.addEventListener('mousedown', (e) => {
   down = e;
@@ -22,13 +22,20 @@ const createHandler = (el, binding) => {
       uu = binding.arg.contains(up.target);
     }
     if (d || u || dd || uu) return;
+    if (!binding.value || !(binding.value instanceof Function)) {
+      return;
+    }
     binding.value();
   };
 };
-
-export const vClickoutside = {
-  mounted(el, binding) {
-    console.log('mounted');
+/**
+ * @name clickoutside
+ * @author liqiang
+ * @description 点击该元素外部区域 vue2 bind,unbind vue3 mounted,beforeUnmount
+ * @example v-clickoutside="callback"
+ */
+export const clickoutside = {
+  bind(el, binding) {
     const id = ++speed;
     el[ctx] = {
       id,
@@ -36,10 +43,13 @@ export const vClickoutside = {
     };
     nodes.push(el);
   },
-  beforeUnmount(el) {
-    console.log('beforeUnmount');
+  unbind(el) {
     const { id } = el[ctx];
     const index = nodes.findIndex((item) => item.id === id);
-    nodes.splice(index, 1);
+    if (index > -1) {
+      nodes.splice(index, 1);
+    }
   },
 };
+
+export default clickoutside;

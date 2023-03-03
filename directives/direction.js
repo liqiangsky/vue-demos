@@ -1,9 +1,10 @@
-import { ios as isIOS } from '../utils/regexp';
+import { ios } from '../utils/regexp';
+import { platform, maxTouchPoints } from '../utils/global';
 
-const ctx = '@@scroll-direction';
+const ctx = '@@directionContext';
 
-const ios = () => {
-  return (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1) || isIOS();
+const iosPhone = () => {
+  return (platform() === 'MacIntel' && maxTouchPoints() > 1) || ios();
 };
 
 const requestAnimationFrame =
@@ -198,19 +199,19 @@ const defaultPlatform = (el, cb) => {
   };
 };
 /**
- * scroll-direction 指令
+ * @name direction
  * @author liqiang
- * @description 判断滚动向上向下向左向右
- * @example 请将该指令放在滚动元素上
+ * @description 判断滚动向上向下向左向右, 请将该指令放在滚动元素上
+ * @example v-direction="callback"
  */
-const scrollDirection = {
+const direction = {
   bind(el, binding) {
     const { value } = binding;
     if (!value || !(value instanceof Function)) {
       return;
     }
     el[ctx] = {};
-    if (ios()) {
+    if (iosPhone()) {
       iosPlatform(el, value);
     } else {
       defaultPlatform(el, value);
@@ -219,7 +220,7 @@ const scrollDirection = {
   unbind(el) {
     const context = el[ctx];
     if (context) {
-      if (ios()) {
+      if (iosPhone()) {
         el.removeEventListener('touchstart', context.event.touchstart);
         el.removeEventListener('touchmove', context.event.touchMove);
         el.removeEventListener('touchend', context.event.touchend);
@@ -231,4 +232,4 @@ const scrollDirection = {
   },
 };
 
-export default scrollDirection;
+export default direction;
