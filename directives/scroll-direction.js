@@ -1,12 +1,9 @@
-import { ios as isIOS } from "../utils/regexp";
+import { ios as isIOS } from '../utils/regexp';
 
-const ctx = "@@scroll-direction";
+const ctx = '@@scroll-direction';
 
 const ios = () => {
-  return (
-    (navigator.platform === "MacIntel" && navigator.maxTouchPoints > 1) ||
-    isIOS()
-  );
+  return (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1) || isIOS();
 };
 
 const requestAnimationFrame =
@@ -14,8 +11,7 @@ const requestAnimationFrame =
   window.mozRequestAnimationFrame ||
   window.webkitRequestAnimationFrame ||
   window.msRequestAnimationFrame;
-const cancelAnimationFrame =
-  window.cancelAnimationFrame || window.mozCancelAnimationFrame;
+const cancelAnimationFrame = window.cancelAnimationFrame || window.mozCancelAnimationFrame;
 
 const iosPlatform = (el, cb) => {
   let direction = null;
@@ -69,14 +65,7 @@ const iosPlatform = (el, cb) => {
     return e;
   };
   const scrolling = () => {
-    const {
-      scrollTop,
-      scrollLeft,
-      scrollHeight,
-      scrollWidth,
-      clientHeight,
-      clientWidth,
-    } = el;
+    const { scrollTop, scrollLeft, scrollHeight, scrollWidth, clientHeight, clientWidth } = el;
     if (oldScrollData.x !== scrollLeft) {
       moveingX = true;
       oldScrollData.x = scrollLeft;
@@ -130,14 +119,7 @@ const iosPlatform = (el, cb) => {
     if (moveingX || moveingY) {
       return;
     }
-    const {
-      scrollHeight,
-      scrollWidth,
-      clientHeight,
-      clientWidth,
-      scrollTop,
-      scrollLeft,
-    } = el;
+    const { scrollHeight, scrollWidth, clientHeight, clientWidth, scrollTop, scrollLeft } = el;
     const minX = 0;
     const maxX = scrollWidth - clientWidth;
     const minY = 0;
@@ -156,9 +138,9 @@ const iosPlatform = (el, cb) => {
     cancelAnimationFrame(context.id);
     context.id = requestAnimationFrame(scrolling);
   };
-  el.addEventListener("touchstart", touchstart);
-  el.addEventListener("touchmove", touchMove);
-  el.addEventListener("touchend", touchend);
+  el.addEventListener('touchstart', touchstart);
+  el.addEventListener('touchmove', touchMove);
+  el.addEventListener('touchend', touchend);
   context.event = {
     touchstart,
     touchMove,
@@ -210,7 +192,7 @@ const defaultPlatform = (el, cb) => {
     point.start = { ...point.start, ...getXY(el) };
     cb(direction);
   };
-  el.addEventListener("scroll", scroll);
+  el.addEventListener('scroll', scroll);
   context.event = {
     scroll,
   };
@@ -238,11 +220,11 @@ const scrollDirection = {
     const context = el[ctx];
     if (context) {
       if (ios()) {
-        el.removeEventListener("touchstart", context.event.touchstart);
-        el.removeEventListener("touchmove", context.event.touchMove);
-        el.removeEventListener("touchend", context.event.touchend);
+        el.removeEventListener('touchstart', context.event.touchstart);
+        el.removeEventListener('touchmove', context.event.touchMove);
+        el.removeEventListener('touchend', context.event.touchend);
       } else {
-        el.removeEventListener("scroll", context.event.scroll);
+        el.removeEventListener('scroll', context.event.scroll);
       }
       cancelAnimationFrame(context.id);
     }

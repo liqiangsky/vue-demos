@@ -7,7 +7,7 @@ document.addEventListener('mousedown', (e) => {
   down = e;
 });
 document.addEventListener('mouseup', (e) => {
-  nodes.forEach(n => {
+  nodes.forEach((n) => {
     n[ctx].handler(down, e);
   });
 });
@@ -24,7 +24,7 @@ const createHandler = (el, binding) => {
     if (d || u || dd || uu) return;
     binding.value();
   };
-}
+};
 
 export const vClickoutside = {
   mounted(el, binding) {
@@ -32,14 +32,14 @@ export const vClickoutside = {
     const id = ++speed;
     el[ctx] = {
       id,
-      handler: createHandler(el, binding)
-    }
+      handler: createHandler(el, binding),
+    };
     nodes.push(el);
   },
   beforeUnmount(el) {
     console.log('beforeUnmount');
     const { id } = el[ctx];
-    const index = nodes.findIndex(item => item.id === id);
+    const index = nodes.findIndex((item) => item.id === id);
     nodes.splice(index, 1);
   },
-}
+};

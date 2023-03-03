@@ -6,7 +6,7 @@
  * @param {String} key 子节点字段名
  */
 const foreachTree = (parent = undefined, data, cb, key = 'children') => {
-  data.forEach(item => {
+  data.forEach((item) => {
     if (cb) {
       cb(item, parent);
     }
@@ -16,6 +16,4 @@ const foreachTree = (parent = undefined, data, cb, key = 'children') => {
   });
 };
 
-export {
-  foreachTree
-}
+export { foreachTree };

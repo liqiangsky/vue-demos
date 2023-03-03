@@ -2,7 +2,7 @@ import Vue from 'vue';
 
 let scrollBarWidth;
 
-export default function() {
+export default function () {
   if (Vue.prototype.$isServer) return 0;
   if (scrollBarWidth !== undefined) return scrollBarWidth;
 
@@ -26,4 +26,4 @@ export default function() {
   scrollBarWidth = widthNoScroll - widthWithScroll;
 
   return scrollBarWidth;
-};
+}
