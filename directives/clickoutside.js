@@ -34,7 +34,7 @@ const createHandler = (el, binding) => {
  * @description 点击该元素外部区域 vue2 bind,unbind vue3 mounted,beforeUnmount
  * @example v-clickoutside="callback"
  */
-export const clickoutside = {
+const clickoutside = {
   bind(el, binding) {
     const id = ++speed;
     el[ctx] = {
