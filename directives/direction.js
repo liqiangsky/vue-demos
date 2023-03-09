@@ -1,18 +1,11 @@
 import { ios } from '../utils/regexp';
-import { platform, maxTouchPoints } from '../utils/global';
+import { platform, maxTouchPoints, requestAnimationFrame, cancelAnimationFrame } from '../utils/global';
 
 const ctx = '@@directionContext';
 
 const iosPhone = () => {
   return (platform() === 'MacIntel' && maxTouchPoints() > 1) || ios();
 };
-
-const requestAnimationFrame =
-  window.requestAnimationFrame ||
-  window.mozRequestAnimationFrame ||
-  window.webkitRequestAnimationFrame ||
-  window.msRequestAnimationFrame;
-const cancelAnimationFrame = window.cancelAnimationFrame || window.mozCancelAnimationFrame;
 
 const iosPlatform = (el, cb) => {
   let direction = null;
