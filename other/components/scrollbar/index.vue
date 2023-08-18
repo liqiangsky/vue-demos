@@ -1,17 +1,7 @@
 <template>
-  <div
-    class="scrollbar"
-    :style="{ height: scrollBar.height }"
-    @mouseover="show = true"
-    @mouseout="show = false"
-  >
+  <div class="scrollbar" :style="{ height: scrollBar.height }" @mouseover="show = true" @mouseout="show = false">
     <!-- 滚动容器 -->
-    <div
-      ref="scrollWarp"
-      class="scroll_warp"
-      v-direction="scroll"
-      :style="scrollWarpStyle"
-    >
+    <div ref="scrollWarp" class="scroll_warp" v-direction="scroll" :style="scrollWarpStyle">
       <div ref="scrollView" class="scroll_view">
         <slot></slot>
       </div>
@@ -56,8 +46,8 @@
 </template>
 <script>
 import debounce from "lodash/debounce";
-import scrollbarWidth from "../../utils/scrollbar-width";
-import Direction from "../../directives/direction";
+import scrollbarWidth from "../../../src/utils/scrollbar-width.js";
+import Direction from "../../../src/directives/direction/direction.js";
 export default {
   name: "LScrollbar",
   data() {
@@ -147,15 +137,13 @@ export default {
     scrollTrack(e) {
       const { offsetY, offsetX } = e;
       if (e.target === this.$refs.vertical) {
-        const y =
-          this.vertical.proportion * (offsetY - this.realVerticalSize / 2);
+        const y = this.vertical.proportion * (offsetY - this.realVerticalSize / 2);
         const detailY = y > this.scrollWarp.scrollTop ? 100 : -100;
         this.scrollWarp.scrollTop = y;
         this.scroll({ detailY });
       }
       if (e.target === this.$refs.horizontal) {
-        const x =
-          this.vertical.proportion * (offsetX - this.realHorizontalSize / 2);
+        const x = this.vertical.proportion * (offsetX - this.realHorizontalSize / 2);
         const detailX = x > this.scrollWarp.scrollLeft ? 100 : -100;
         this.scrollWarp.scrollLeft = x;
         this.scroll({ detailX });
@@ -201,8 +189,7 @@ export default {
      * 更新滚动条比例
      */
     updateThumbProportion() {
-      const { scrollHeight, scrollWidth, clientHeight, clientWidth } =
-        this.scrollWarp;
+      const { scrollHeight, scrollWidth, clientHeight, clientWidth } = this.scrollWarp;
       this.vertical.proportion = scrollHeight / clientHeight;
       this.horizontal.proportion = scrollWidth / clientWidth;
     },
@@ -210,8 +197,7 @@ export default {
      * 更新滚动条滑块大小
      */
     updateThumbSize() {
-      const { scrollHeight, scrollWidth, clientHeight, clientWidth } =
-        this.scrollWarp;
+      const { scrollHeight, scrollWidth, clientHeight, clientWidth } = this.scrollWarp;
       this.vertical.size = (clientHeight / scrollHeight) * 100;
       this.horizontal.size = (clientWidth / scrollWidth) * 100;
     },

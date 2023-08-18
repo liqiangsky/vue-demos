@@ -1,0 +1,8 @@
+{
+  "name": "vue-demos",
+  "version": "0.0.1",
+  "type": "module",
+  "devDependencies": {
+    "prettier": "^3.0.2"
+  }
+}

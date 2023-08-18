@@ -1,10 +1,10 @@
-import { ios } from '../utils/regexp';
-import { platform, maxTouchPoints } from '../utils/global';
+import { ios } from "../../utils/regexp.js";
+import { platform, maxTouchPoints } from "../../utils/global.js";
 
-const ctx = '@@directionContext';
+const ctx = "@@directionContext";
 
 const iosPhone = () => {
-  return (platform() === 'MacIntel' && maxTouchPoints() > 1) || ios();
+  return (platform() === "MacIntel" && maxTouchPoints() > 1) || ios();
 };
 
 const requestAnimationFrame =
@@ -139,9 +139,9 @@ const iosPlatform = (el, cb) => {
     cancelAnimationFrame(context.id);
     context.id = requestAnimationFrame(scrolling);
   };
-  el.addEventListener('touchstart', touchstart);
-  el.addEventListener('touchmove', touchMove);
-  el.addEventListener('touchend', touchend);
+  el.addEventListener("touchstart", touchstart);
+  el.addEventListener("touchmove", touchMove);
+  el.addEventListener("touchend", touchend);
   context.event = {
     touchstart,
     touchMove,
@@ -193,7 +193,7 @@ const defaultPlatform = (el, cb) => {
     point.start = { ...point.start, ...getXY(el) };
     cb(direction);
   };
-  el.addEventListener('scroll', scroll);
+  el.addEventListener("scroll", scroll);
   context.event = {
     scroll,
   };
@@ -221,11 +221,11 @@ const direction = {
     const context = el[ctx];
     if (context) {
       if (iosPhone()) {
-        el.removeEventListener('touchstart', context.event.touchstart);
-        el.removeEventListener('touchmove', context.event.touchMove);
-        el.removeEventListener('touchend', context.event.touchend);
+        el.removeEventListener("touchstart", context.event.touchstart);
+        el.removeEventListener("touchmove", context.event.touchMove);
+        el.removeEventListener("touchend", context.event.touchend);
       } else {
-        el.removeEventListener('scroll', context.event.scroll);
+        el.removeEventListener("scroll", context.event.scroll);
       }
       cancelAnimationFrame(context.id);
     }
