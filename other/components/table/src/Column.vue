@@ -5,28 +5,27 @@
  * @Description: table-column组件
 -->
 <template>
-  <sl-table-column v-bind="{ ...$attrs, formatter }">
-    <template #default="" v-if="props.column?.columns?.length">
+  <sl-table-column v-bind="{ ...column, formatter }">
+    <template #default v-if="column?.columns?.length">
       <k-table-column
-        v-for="(column, index) in props.column?.columns"
-        :key="column?.prop || index"
-        v-bind="column"
-        :column="column"
+        v-for="(columnColumn, index) in column?.columns"
+        :key="columnColumn?.prop || index"
+        :column="columnColumn"
       >
         <template v-for="slot in Object.keys($slots)" :key="slot" v-slot:[slot]="slotProps">
           <slot :name="slot" v-bind="slotProps || {}"></slot>
         </template>
       </k-table-column>
     </template>
-    <template v-else-if="$slots[<string>($attrs.prop || $attrs.label)]" #default="slotProps">
+    <template v-else-if="$slots[<string>(column.prop || column.label)]" #default="slotProps">
       <!-- 解决表格无数据时造成该插槽内的组件加载 -->
       <K-slot-wrapper>
-        <slot :name="$attrs.prop || $attrs.label" v-bind="slotProps || {}"></slot>
+        <slot :name="column.prop || column.label" v-bind="slotProps || {}"></slot>
       </K-slot-wrapper>
     </template>
-    <template v-if="$slots[`${<string>($attrs.prop || $attrs.label)}Header`]" #header="slotProps">
+    <template v-if="$slots[`${<string>(column.prop || column.label)}Header`]" #header="slotProps">
       <K-slot-wrapper>
-        <slot :name="`${$attrs.prop || $attrs.label}Header`" v-bind="slotProps || {}"></slot>
+        <slot :name="`${column.prop || column.label}Header`" v-bind="slotProps || {}"></slot>
       </K-slot-wrapper>
     </template>
   </sl-table-column>
@@ -37,6 +36,7 @@ import type { TableColumn } from "@kotler/types/table";
 import type { TableColumnCtx } from "@sl-design/sl-ui";
 import KSlotWrapper from "./SlotWrapper.vue";
 import { formatMoney, formatToFixed } from "@kotler/utils";
+import isNull from "lodash-es/isNull";
 
 defineOptions({
   name: "KTableColumn",
@@ -51,7 +51,7 @@ const props = defineProps<{
  * @param value
  */
 const formatVoidValue = (column, value) => {
-  if ((Array.isArray(value) && value.length === 0) || (!value && Number(value) !== 0)) {
+  if ((Array.isArray(value) && value.length === 0) || isNull(value) || (!value && Number(value) !== 0)) {
     return "-";
   }
   return value;

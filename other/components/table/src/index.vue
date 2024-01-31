@@ -1,17 +1,17 @@
 <!--
  * @Author: 李强
  * @Date: 2023-07-26 16:43:05
- * @LastEditors: 耿振 1016203347@qq.com
+ * @LastEditors: 李强
  * @Description: table组件
 -->
 <template>
-  <div class="table" :class="{ 'modal-table': props.mode === 'modal' }">
-    <k-table-toolbar v-if="props.toolbar" v-bind="typeof props.toolbar === 'boolean' ? {} : props.toolbar">
+  <div class="table" :class="{ 'modal-table': mode === 'modal' }">
+    <k-table-toolbar v-if="toolbar" v-bind="typeof toolbar === 'boolean' ? {} : toolbar">
       <template #selection>
         <slot name="select">
           <div v-if="isSelect">
             <span>已选：{{ selectionList?.length }}</span>
-            <span v-if="props.pagination">/{{ (props.pagination as PaginationProps).total }}</span>
+            <span v-if="pagination">/{{ (pagination as PaginationProps).total }}</span>
           </div>
         </slot>
       </template>
@@ -22,13 +22,8 @@
         <slot name="toolbarRight"></slot>
       </template>
     </k-table-toolbar>
-    <sl-table ref="tableRef" v-bind="{ ...defaultTableProps, ...props.table }" style="margin-bottom: 3px">
-      <k-table-column
-        v-for="(column, index) in props.table?.columns"
-        :key="column?.prop || index"
-        v-bind="column"
-        :column="column"
-      >
+    <sl-table ref="tableRef" v-bind="{ ...defaultTableProps, ...table }" style="margin-bottom: 3px">
+      <k-table-column v-for="(column, index) in table?.columns" :key="column?.prop || index" :column="column">
         <template v-for="slot in tableColumnSlots" :key="slot" v-slot:[slot]="slotProps">
           <slot :name="slot" v-bind="slotProps || {}"></slot>
         </template>
@@ -46,16 +41,16 @@
         <slot name="append" v-bind="slotProps || {}"></slot>
       </template>
     </sl-table>
-    <template v-if="Object.keys(props.pagination).length > 0">
-      <k-page-footer class="pagination-page" v-if="props.mode === 'page'">
-        <k-pagination :mode="props.mode" background :pagination="<PaginationProps>props.pagination" />
+    <template v-if="Object.keys(pagination).length > 0">
+      <k-page-footer class="pagination-page" v-if="mode === 'page'">
+        <k-pagination :mode="mode" background :pagination="<PaginationProps>pagination" />
       </k-page-footer>
       <k-pagination
         class="pagination-modal"
-        v-else-if="props.mode === 'modal'"
-        :mode="props.mode"
+        v-else-if="mode === 'modal'"
+        :mode="mode"
         background
-        :pagination="<PaginationProps>props.pagination"
+        :pagination="<PaginationProps>pagination"
       />
     </template>
   </div>
