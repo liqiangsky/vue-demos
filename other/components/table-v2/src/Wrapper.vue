@@ -88,8 +88,8 @@ const randomKey = () => Math.random().toString(36).substring(2);
  * @param e
  */
 const onmouseenter = e => {
-  const { scrollWidth, clientWidth } = e.target;
-  visibleDisabled.value = scrollWidth > clientWidth;
+  const { scrollWidth, offsetWidth } = e.target;
+  visibleDisabled.value = scrollWidth > offsetWidth;
 };
 /**
  * @description 默认单元格有溢出提示
