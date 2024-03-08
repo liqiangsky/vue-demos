@@ -41,6 +41,7 @@ import { computed, getCurrentInstance, h, isVNode, onMounted, ref, resolveCompon
 import { formatMoney, formatToFixed } from "@kotler/utils";
 import type { TableV2Props } from "@kotler/types/table-v2";
 import type { TableInstance } from "@sl-design/sl-ui";
+import isNull from "lodash-es/isNull";
 defineOptions({
   name: "KTableV2Wrapper",
 });
@@ -179,7 +180,7 @@ const formatIndexValue = (cellProps, value) => {
  * @param value
  */
 const formatVoidValue = (cellProps, value) => {
-  if ((Array.isArray(value) && value.length === 0) || (!value && Number(value) !== 0)) {
+  if ((Array.isArray(value) && value.length === 0) || isNull(value) || (!value && Number(value) !== 0)) {
     return "-";
   }
   return value;
